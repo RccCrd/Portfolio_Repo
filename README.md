@@ -1,4 +1,4 @@
-<h1>Hi, I'm Riccardo! <br/><a href="https://www.linkedin.com/in/riccardo-cordiner-4a9a1550/">Financial Services professional</a>and <a href="https://github.com/RccCrd/">Coding enthusiast</a>
+<h1>Hi, I'm Riccardo! <br/><a href="https://www.linkedin.com/in/riccardo-cordiner-4a9a1550/">Financial Services professional </a>and <a href="https://github.com/RccCrd/">Coding enthusiast</a>
 
 <h2>👨‍💻 Python Based Projects:</h2>
 

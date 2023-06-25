@@ -32,7 +32,6 @@ def main():
         return
     ############MODULE 3 - REW_M4_Write_data# ##################
     data = REW_M3_Clean_data.clean_data(data, city_name)
-
     ############MODULE 4 - REW_M4_Write_data# ##################
     REW_M4_Write_data.write_output_tocsv(data , output_name)
     print('Data successfully scraped and saved.')

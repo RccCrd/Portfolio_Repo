@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from tqdm import tqdm
 import re
+import os
 #################################
 
 ''' 
@@ -35,7 +36,9 @@ import re
 
 def write_output_tocsv(data, output_name):
     data=pd.DataFrame(data)
-    data.to_csv('WebScraping/Output/'+output_name, sep=",", header=True, index=False)
+    output_folder = 'Output'
+    output_file = os.path.join(output_folder, output_name)
+    data.to_csv(output_file, sep=",", header=True, index=False)
 
 
 def main():

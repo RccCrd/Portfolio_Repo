@@ -47,7 +47,6 @@ def clean_data( data, city_name):
     data.loc[:,"sqm"] = pd.to_numeric(data["sqm"], errors="coerce")
     # Create a counting column for quantifying the assets for each location
     data['count'] = 1
-    print('test')
 
 def main():
     pass

@@ -18,6 +18,7 @@ def get_user_input():
     '''
     output_name = input('Please enter the output filename (for example "Output"):') + '.csv'
     city_name = input('Please enter the city of interest (in local language, for example: "Napoli"):')
+    city_name = city_name.capitalize()
     asset_number = int(input('Please enter the number of RE Assets to analyze (min 1 - max 2000):'))
     if asset_number > 2000:
         print('The chosen amount exceeds the maximum admitted value, defaulting to 2000.')

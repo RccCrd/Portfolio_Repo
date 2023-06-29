@@ -54,6 +54,8 @@ def request_and_append_links(asset_number, city_name, session):
 
 
     while len(links) < asset_number:
+        
+        print (f'Getting URLs: {round(len(links)/asset_number*100 , 0)} %', end='\r')
         content = session.get(url + str(index))
         index += 1
         soup = BeautifulSoup(content.text, 'lxml')

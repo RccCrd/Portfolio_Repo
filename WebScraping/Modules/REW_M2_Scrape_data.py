@@ -44,16 +44,22 @@ def scrape_data(links, session):
 
             div_tag = soup.find("h1", {'class': "in-titleBlock__title"})
             posting_title = div_tag.text if div_tag else 'na'
-
-            div_tag = soup.find("li", {'class': "nd-list__item in-feat__item in-feat__item--main in-detail__mainFeaturesPrice"})
-            if isinstance(div_tag, (int, float)):
-                price = div_tag.text.split('€')[1].strip() if div_tag else 'na'
-            else:
-                price = 'na'
+            try:
+                div_tag = soup.find("li", {'class': "nd-list__item in-feat__item in-feat__item--main in-detail__mainFeaturesPrice"}) 
+                if "€" in div_tag.text:           
+                    price = div_tag.text.split('€')[1].strip() if div_tag else 'na'
+                else:
+                    price = 'na'
+            except:
+                div_tag = soup.find("li", {'class': "nd-list__item in-feat__item in-feat__item--main in-detail__mainFeaturesPrice in-detail__mainFeaturesPrice--interactive"}) 
+                if "€" in div_tag.text:           
+                    price = div_tag.text.split('€')[1].strip() if div_tag else 'na'
+                else:
+                    price = 'na'
 
             div_tag = soup.find("li", {'aria-label': "locali"})
             rooms = div_tag.text if div_tag else 'na'
-
+   
             div_tag = soup.find("li", {'aria-label': "tipologie"})
             tipologie = div_tag.text if div_tag else 'na'
 

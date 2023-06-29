@@ -40,13 +40,12 @@ def clean_data( data, city_name):
     #data['price'] = data['price'].apply(lambda x: x.replace(".", ""))
     data = data[data['tipologie'] == 'na']
     data.loc[:, 'price'] = data['price'].str.split('-').str[0]
-    data['city'] = city_name
-    data["price"] = data["price"].apply(lambda x: re.sub("[^0-9,]", "", x))
+    data = data.assign(city=city_name)
+    data.loc[:,"price"] = data["price"].apply(lambda x: re.sub("[^0-9,]", "", x))
     data.loc[:,"price"] = pd.to_numeric(data["price"], errors="coerce")
     data.loc[:,"sqm"] = data["sqm"].apply(lambda x: re.sub("[^0-9,]", "", x))
     data.loc[:,"sqm"] = pd.to_numeric(data["sqm"], errors="coerce")
-    # Create a counting column for quantifying the assets for each location
-    data['count'] = 1
+    return data
 
 def main():
     pass

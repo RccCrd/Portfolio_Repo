@@ -63,7 +63,7 @@ def scrape_data(links, session):
             div_tag = soup.find("li", {'aria-label': "tipologie"})
             tipologie = div_tag.text if div_tag else 'na'
 
-            div_tag = soup.find("div", {'class': "in-feat__data"})
+            div_tag = soup.find("div", {'aria-label': "piano"})
             floor = div_tag.text if div_tag else 'na'
 
             div_tag = soup.find("li", {'aria-label': "superficie"})

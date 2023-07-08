@@ -45,6 +45,7 @@ def clean_data( data, city_name):
     data.loc[:,"price"] = pd.to_numeric(data["price"], errors="coerce")
     data.loc[:,"sqm"] = data["sqm"].apply(lambda x: re.sub("[^0-9,]", "", x))
     data.loc[:,"sqm"] = pd.to_numeric(data["sqm"], errors="coerce")
+    data=data.drop('tipologie', axis=1)
     return data
 
 def main():

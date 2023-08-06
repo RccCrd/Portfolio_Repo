@@ -39,7 +39,8 @@ def scrape_data(links, session):
 
     for count, url_found in enumerate(tqdm(links, desc="Scraping Progress")):
         try:
-            real_estate = session.get(url_found)
+            url , neighborhood_name = url_found
+            real_estate = session.get(url)
             soup = BeautifulSoup(real_estate.text, 'lxml')
 
             div_tag = soup.find("h1", {'class': "in-titleBlock__title"})
@@ -63,7 +64,8 @@ def scrape_data(links, session):
             div_tag = soup.find("li", {'aria-label': "tipologie"})
             tipologie = div_tag.text if div_tag else 'na'
 
-            div_tag = soup.find("div", {'aria-label': "piano"})
+            div_tag = soup.find("li", {'aria-label': "piano"})
+            print(div_tag)
             floor = div_tag.text if div_tag else 'na'
 
             div_tag = soup.find("li", {'aria-label': "superficie"})
@@ -72,13 +74,10 @@ def scrape_data(links, session):
             div_tag = soup.find("li", {'aria-label': 'bagni'}) or soup.find("li", {'aria-label': 'bagno'})
             toilets = div_tag.text if div_tag else 'na'
 
-            div_tag = soup.find("div", {'class': "in-titleBlock"})
-            location_string = div_tag.text
-            location_area = div_tag.find_all("span", {'class': "in-location"})
-            location_area = location_area[1]
-            location = location_area.text if div_tag else 'na'
 
-            data.loc[count + 1] = [posting_title, price, rooms, sqm, toilets, floor, url_found, location, tipologie]
+            location = neighborhood_name
+
+            data.loc[count + 1] = [posting_title, price, rooms, sqm, toilets, floor, url, location, tipologie]
 
         except Exception as e:
             print(f'Error scraping {url_found}: {str(e)}')

@@ -1,3 +1,3 @@
-path = '../Portfolio_Repo-1/WebScraping/Output/'
+path = '../Portfolio_Repo-1/Output/'
 filename = 'Database.csv'
 

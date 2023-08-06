@@ -32,15 +32,29 @@ import os
 
 '''
 
-
+import os
+import pandas as pd
 
 def write_output_tocsv(data, output_name):
-    data=pd.DataFrame(data)
+    # Validate the output_name parameter
+    if not isinstance(output_name, str):
+        raise ValueError("Output name must be a string.")
+
+    # Create the output folder if it doesn't exist
     output_folder = 'Output'
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    # Construct the output file path
     output_file = os.path.join(output_folder, output_name)
-    data.to_csv(output_file, sep=",", header=True, index=False)
 
+    try:
+        # Write the DataFrame to a CSV file
+        data.to_csv(output_file, sep=",", header=True, index=False)
 
+        print("Data successfully written to", output_file)
+    except Exception as e:
+        print("Error occurred while writing data to CSV:", str(e))
 
 def main():
     pass

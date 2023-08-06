@@ -9,21 +9,44 @@ def get_user_input():
         Returns
         ----------
         output_name : {str}
-            The name (excluding the extension name) of the output file. The output will be stored by default in the active folder.
+            It's a variable inputed by the user. It is the name (excluding the extension
+            name) of the output file. The output will be stored by default in the active 
+            folder.
         city_name : {str}
-            It is the name of the city that the scraping will be executed on.
+            It's a variable inputed by the user.It is the name of the city that the 
+            scraping will be executed on.
         asset_number : {str}
-            It is the number of assets that will be included in the scraping. The number may not exceed 2000. 
+            It's a variable inputed by the user.It is the number of assets that will be 
+            included in the scraping. The number may not exceed 2000. 
+        research_type  : {str}
+            It's a variable inputed by the user. It carries the information wether
+            the user is interested in scraping the data related to a rent posting
+            or a sale posting on the immobiliare.it website.
   
     '''
     output_name = input('Please enter the output filename (for example "Output"):') + '.csv'
+    if output_name == '.csv':
+        print('No information provided, defaulting to Output.csv')
+        output_name = 'Output.csv' 
     city_name = input('Please enter the city of interest (in local language, for example: "Napoli"):')
+    if city_name == '':
+        print('No information provided, defaulting to Roma')
+        city_name = 'Roma'
+    research_type = input('Please input the type of research: either "Sale" or "Rent":')
+    
+    if not research_type:
+            print('No information provided, defaulting to Sale')
+            research_type = 'Sale' 
     city_name = city_name.capitalize()
-    asset_number = int(input('Please enter the number of RE Assets to analyze (min 1):'))
+    asset_number = input('Please enter the number of RE Assets to analyze (min 1):')
+    if asset_number == '':
+            print('No information provided, defaulting to 20')
+            asset_number = 20 
+    asset_number = int(asset_number)
     if asset_number < 1:
         print('The chosen amount is lower than the minimum admitted value, defaulting to 1.')
         asset_number = 1
-    return output_name,city_name,asset_number
+    return output_name,city_name,asset_number,research_type
     
 def main():
     output_name,city_name,asset_number=get_user_input()

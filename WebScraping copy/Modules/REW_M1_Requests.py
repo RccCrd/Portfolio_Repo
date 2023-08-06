@@ -15,10 +15,56 @@ def get_controlled_link(link):
     return link
 
 
-def get_neighborhoods(asset_number, city_name, session):
+def get_neighborhoods(asset_number, city_name, session , research_type):
+    ''' 
+    The function gets the links to the relevant pages on the 
+    immobiliare.it website, taking in consideration the city of interest, 
+    and scraping the pages that represent each neighborhood of which the
+    relevant city is made of, according to the immobiliare.it website. 
+    The output is a python list named 'neighborhoods'.
+    session : {'requests.sessions.Session'}
+    The session variable is equal to a "requests.Session()" statement.
+
+    Parameters
+    ----------
+
+    asset_number : {str}
+    It is the number of assets that will be included in the scraping. The number 
+    may not exceed 2000. 
+    
+    city_name : {str}
+    It is the name of the city that the scraping will be executed on.
+    
+    session : {'requests.sessions.Session'}
+        The session variable is equal to a "requests.Session()" statement.
+
+    research_type  : {str}
+        It's a variable inputed by the user. It carries the information wether
+        the user is interested in scraping the data related to a rent posting
+        or a sale posting on the immobiliare.it website.
+         
+    Returns
+    ----------
+
+    neighborhoods : {list} 
+    It is the output from the "get_neighborhoods" function, it is a python list 
+    of touples containing  (href_value, neighborhood_name) i.e. respectively:
+    1. The url of the immobiliare.it website connected to a certain neighborhood 
+    the city stored in the city_name variable.
+    2. The name of the neighborhood.
+    The list is a collection of all the neighborhoods of which a city is made of
+    according to the immobiliare.it website. The scraping function will use the 
+    url of each neighborhood in order to make a research for all the available 
+    postings, and label them as "located" in the neighborhood "neighborhood_name".
+
+'''
     neighborhoods = []
     counter_neighborhoods = 0
-    url = 'https://www.immobiliare.it/vendita-case/' + city_name.lower() + '/?criterio=rilevanza&pag='
+    print(research_type)
+    if research_type.lower() == 'sale':
+        url = 'https://www.immobiliare.it/vendita-case/' + city_name.lower() + '/?criterio=rilevanza&pag='
+    if  research_type.lower() == 'rent':
+        url = 'https://www.immobiliare.it/affitto-case/' + city_name.lower() + '/?criterio=rilevanza&pag='
     content = session.get(url)
     soup = BeautifulSoup(content.text, 'lxml')
     div_tags = soup.find_all("li", {'class': "nd-stackItem"})
@@ -26,14 +72,15 @@ def get_neighborhoods(asset_number, city_name, session):
     for tag in div_tags:
         counter_neighborhoods = counter_neighborhoods + 1 
         href_value = tag.a['href']
-        neighborhoods.append(href_value)
-    print(len(neighborhoods))
+        neighborhood_name = tag.text
+        neighborhoods.append((href_value, neighborhood_name))
+
     return neighborhoods
 
 def request_and_append_links(asset_number, city_name, session , neighborhoods):
     '''
     The function gets the links to the relevant pages on the immobiliare.it website, 
-    taking in consideration the city of interest, and the amount of assets requested
+    taking in consideration the city of interest, all the neighborhoods of the city of interest, and the amount of assets requested
     by the user. It returns a list of links of immobiliare.it website.
 
     
@@ -47,6 +94,17 @@ def request_and_append_links(asset_number, city_name, session , neighborhoods):
     asset_number : {str}
         It is the number of assets that will be included in the scraping. The number 
         may not exceed 2000. 
+
+    neighborhoods : {list} 
+        It is the output from the "get_neighborhoods" function, it is a python list 
+        of touples containing  (href_value, neighborhood_name) i.e. respectively:
+        1. The url of the immobiliare.it website connected to a certain neighborhood 
+        the city stored in the city_name variable.
+        2. The name of the neighborhood.
+        The list is a collection of all the neighborhoods of which a city is made of
+        according to the immobiliare.it website. The scraping function will use the 
+        url of each neighborhood in order to make a research for all the available 
+        postings, and label them as "located" in the neighborhood "neighborhood_name".
 
     Returns
     ----------
@@ -69,11 +127,11 @@ def request_and_append_links(asset_number, city_name, session , neighborhoods):
     
     for link_neighborhood in neighborhoods:
         index = 1
-
+        url , neighborhood_name = link_neighborhood
         while len(links) < asset_number:
             print (f'Getting URLs: {round(len(links)/asset_number*100 , 0)} %', end='\r')
 
-            content = session.get(link_neighborhood +  '/?criterio=rilevanza&pag=' + str(index))
+            content = session.get(url +  '/?criterio=rilevanza&pag=' + str(index))
             index += 1
             soup = BeautifulSoup(content.text, 'lxml')
             div_tags = soup.find_all("div", {'class': "nd-mediaObject__content in-card__content in-realEstateListCard__content"})
@@ -81,10 +139,10 @@ def request_and_append_links(asset_number, city_name, session , neighborhoods):
                 a_tags = tag.find_all("a")
                 for tag in a_tags:
                     link = get_controlled_link(tag['href'])
-                    links.append(link)
+                    links.append((link , neighborhood_name))
             if not div_tags:
                 break
-        print('no more links in ' , link_neighborhood , "arrived to " , len(links))
+        # print('no more links in ' , neighborhood_name , "arrived to " , len(links))
     links = links[:asset_number]
     return links
 

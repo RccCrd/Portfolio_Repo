@@ -19,7 +19,7 @@ from Modules import REW_M4_Write_data
 def main():
     ##############MODULE 0 - REW_M0_Get_input ###################
     output_name,city_name,asset_number,research_type=REW_M0_Get_input.get_user_input()
-    print(research_type)
+    
     ##############MODULE 1 - REW_M1_Requests ###################
     session = requests.Session()
     neighborhoods = REW_M1_Requests.get_neighborhoods(asset_number, city_name, session , research_type)

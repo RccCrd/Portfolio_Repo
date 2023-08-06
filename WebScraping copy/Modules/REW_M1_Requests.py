@@ -60,7 +60,6 @@ def get_neighborhoods(asset_number, city_name, session , research_type):
 '''
     neighborhoods = []
     counter_neighborhoods = 0
-    print(research_type)
     if research_type.lower() == 'sale':
         url = 'https://www.immobiliare.it/vendita-case/' + city_name.lower() + '/?criterio=rilevanza&pag='
     if  research_type.lower() == 'rent':

@@ -11,4 +11,13 @@
 - <b>Financial Modeling:</b>
   - [Start-up Business Planning](https://github.com/xxxxxxxxxxxxxxxxx)
   - [Real Estate Business Planning](https://github.com/xxxxxxxxxxxxxxxxx)
-  
+  <script>
+        function toggleSection() {
+            const section = document.getElementById('hidden-section');
+            if (section.style.display === 'none' || section.style.display === '') {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        }
+    </script>
